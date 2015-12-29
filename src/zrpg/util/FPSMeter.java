@@ -1,4 +1,6 @@
-package zrpg;
+package zrpg.util;
+
+import zrpg.ZRPG;
 
 public class FPSMeter {
 	// Simple FPS meter class.

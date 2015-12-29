@@ -1,6 +1,7 @@
 package zrpg;
 
 import zrpg.statemachine.StateMachine;
+import zrpg.util.FPSMeter;
 
 public class ZRPG {
 

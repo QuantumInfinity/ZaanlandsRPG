@@ -2,6 +2,7 @@ package zrpg.bootstrap;
 
 import java.io.IOException;
 
+import zrpg.States;
 import zrpg.ZRPG;
 import zrpg.bootstrap.OSUtils.OSType;
 import zrpg.bootstrap.OSUtils.UnsupportedArchitectureException;
@@ -20,7 +21,7 @@ public class BootstrapState implements IState {
 			throw new RuntimeException(e);
 		}
 
-		ZRPG.gameState().popState();
+		ZRPG.gameState().switchToState(States.WINDOW);
 	}
 
 	public static void loadLWJGL() throws IOException {
@@ -85,6 +86,5 @@ public class BootstrapState implements IState {
 
 	@Override
 	public void onDestroy() {
-		System.gc();
 	}
 }

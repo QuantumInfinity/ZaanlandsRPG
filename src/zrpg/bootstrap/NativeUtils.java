@@ -24,7 +24,6 @@ public class NativeUtils {
 	}
 
 	public static void copyFromJar(String from, File to) {
-		System.out.println(to);
 		try {
 			if (!from.startsWith("/"))
 				throw new IllegalArgumentException("The path has to be absolute (start with '/').");
