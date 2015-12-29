@@ -9,7 +9,7 @@ public interface IState {
     public void onUpdate();
     
     // Called at as fast as possible, or at a constant interval.
-    public void onRender(float dt);
+    public void onRender();
     
     // Called when the statemachine switched from this state to another.
     public void onDestroy();

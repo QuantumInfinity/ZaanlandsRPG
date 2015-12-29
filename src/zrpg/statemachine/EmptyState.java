@@ -13,7 +13,7 @@ public class EmptyState implements IState {
 	}
 
 	@Override
-	public void onRender(float dt) {
+	public void onRender() {
 		
 	}
 

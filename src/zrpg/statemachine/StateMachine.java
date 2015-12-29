@@ -31,7 +31,7 @@ public class StateMachine {
 
 	// Push a state to the stack.
 	public void pushState(int state) {
-		if (!states.contains(state))
+		if (states.size() <= state)
 			throw new IllegalArgumentException("Unknown state");
 		stack.push(state);
 		init();
@@ -54,8 +54,8 @@ public class StateMachine {
 	}
 
 	// Call the current state's destroy function.
-	public void render(float dt) {
-		states.get(stack.peek()).onRender(dt);
+	public void render() {
+		states.get(stack.peek()).onRender();
 	}
 	
 	// Call the current state's destroy function.
