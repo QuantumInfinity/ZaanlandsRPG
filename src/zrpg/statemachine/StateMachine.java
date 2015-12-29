@@ -18,8 +18,6 @@ public class StateMachine {
 		states = new ArrayList<IState>();
 		stack = new Stack<Integer>();
 		actionQueue = new ConcurrentLinkedQueue<Action>();
-		int emptyState = addState(new EmptyState()); // This state should always have id '0'
-		pushState(emptyState);
 	}
 
 	// Add a state to the statemachine, and return an 'id' of the state
@@ -31,7 +29,9 @@ public class StateMachine {
 	// Updates the machine with action. Returns if there are no states left (and thus the engine should exit).
 	public boolean updateMachine() {
 		Action a;
-		while ((a = actionQueue.poll()) != null){
+		while (actionQueue.size() > 0) {
+			a = actionQueue.poll();
+			//System.err.println(actionQueue.size() + " " + a.action + " " + stack.size() + " ");
 			switch(a.action) {
 			case Action.ACTION_SWITCH:
 				destroy();
@@ -85,9 +85,9 @@ public class StateMachine {
 	}
 	
 	private class Action {
-		final public static int ACTION_PUSH	  = 0; // Push the state.
-		final public static int ACTION_POP	  = 1; // Pop the state.
-		final public static int ACTION_SWITCH = 2; // Switch to the state (replace topmost state on the stack).
+		final public static int ACTION_SWITCH = 0; // Switch to the state (replace topmost state on the stack).
+		final public static int ACTION_PUSH	  = 1; // Push the state.
+		final public static int ACTION_POP	  = 2; // Pop the state.
 		
 		final public int action; // The action to do.
 		final public Integer state; // An 'operand' is not always needed (pop).

@@ -40,15 +40,9 @@ public class ZRPG {
 		gameState = new StateMachine();
 		States.registerStates();
 	}
-
-	// Start the game.
-	private void run() {
-		loop();
-		gameState.destroy();
-	}
 	
 	// Run the main loop.
-	private void loop() {
+	private void run() {
 		double gameTime = getMillis(), renderTime = gameTime;
 
 		while (!gameState.updateMachine()) {
@@ -94,6 +88,10 @@ public class ZRPG {
 	// Get the game instance.
 	public static ZRPG instance() {
 		return instance;
+	}
+	
+	public static StateMachine gameState() {
+		return instance().gameState;
 	}
 
 	// Get the measured FPS.

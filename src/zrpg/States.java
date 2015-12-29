@@ -11,5 +11,7 @@ public class States {
 		StateMachine gameState = ZRPG.instance().gameState;
 		
 		BOOTSTRAP = gameState.addState(new BootstrapState());
+		
+		gameState.pushState(BOOTSTRAP);
 	}
 }
