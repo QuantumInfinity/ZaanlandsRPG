@@ -5,7 +5,7 @@ import zrpg.statemachine.StateMachine;
 public class ZRPG {
 
 	// The current game instance.
-	public static ZRPG instance;
+	public static ZRPG instance = null;
 
 	// The amount of frames the engine can maximally skip.
 	final public static int MAXFRAMESKIP = 5;
@@ -19,9 +19,6 @@ public class ZRPG {
 	// The maximum number of fps, fpslimit <= 0: inlimited.
 	public int fpslimit = 60;
 
-	// Is the game running?
-	private boolean running;
-
 	// When the game started.
 	private long startTime;
 	
@@ -32,18 +29,20 @@ public class ZRPG {
 	public StateMachine gameState;
 
 	private ZRPG() {
+		if (instance != null)
+			throw new RuntimeException("Only once instance of ZRPG can be running.");
+		
 		instance = this;
-		running = false;
 		startTime = System.nanoTime();
 		fpsmeter = new FPSMeter();
 		tickmeter = new FPSMeter();
 		
 		gameState = new StateMachine();
+		States.registerStates();
 	}
 
 	// Start the game.
 	private void run() {
-		running = true;
 		loop();
 		gameState.destroy();
 	}
@@ -52,16 +51,12 @@ public class ZRPG {
 	private void loop() {
 		double gameTime = getMillis(), renderTime = gameTime;
 
-		while (running) {
+		while (!gameState.updateMachine()) {
 			double currTime = getMillis();
 			if (currTime - gameTime > MAXTIMEDIFF || currTime - renderTime > MAXTIMEDIFF) {
 				gameTime = currTime; // resync
 				renderTime = currTime;
 			}
-			
-			// Update machine & test if the engine should stop.
-			if (gameState.updateMachine())
-				stop();
 
 			while (currTime >= gameTime) {
 				gameTime += 1000. / TPS;
@@ -99,11 +94,6 @@ public class ZRPG {
 	// Get the game instance.
 	public static ZRPG instance() {
 		return instance;
-	}
-
-	// Stop the game.
-	public void stop() {
-		running = false;
 	}
 
 	// Get the measured FPS.

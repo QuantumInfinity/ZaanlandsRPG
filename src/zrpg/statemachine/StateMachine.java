@@ -1,11 +1,12 @@
 package zrpg.statemachine;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class StateMachine {
+
 	// Arraylist of states in this statemachine.
 	ArrayList<IState> states;
 	// The current state.
@@ -16,7 +17,7 @@ public class StateMachine {
 	public StateMachine() {
 		states = new ArrayList<IState>();
 		stack = new Stack<Integer>();
-		actionQueue = new LinkedList<Action>();
+		actionQueue = new ConcurrentLinkedQueue<Action>();
 		int emptyState = addState(new EmptyState()); // This state should always have id '0'
 		pushState(emptyState);
 	}
@@ -34,7 +35,7 @@ public class StateMachine {
 			switch(a.action) {
 			case Action.ACTION_SWITCH:
 				destroy();
-				stack.pop();
+				stack.pop(); // No break.
 			case Action.ACTION_PUSH:
 				stack.push(a.state);
 				init();
@@ -96,4 +97,4 @@ public class StateMachine {
 			this.state = state;
 		}
 	}
-}
+} // wo precies 100 lines :o
