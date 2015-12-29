@@ -16,7 +16,7 @@ public class ZRPG {
 	// The amount of ticks per second.
 	final public static int TPS = 60;
 
-	// The maximum number of fps, 0 = infinite.
+	// The maximum number of fps, fpslimit <= 0: inlimited.
 	public int fpslimit = 60;
 
 	// Is the game running?
@@ -58,6 +58,10 @@ public class ZRPG {
 				gameTime = currTime; // resync
 				renderTime = currTime;
 			}
+			
+			// Update machine & test if the engine should stop.
+			if (gameState.updateMachine())
+				stop();
 
 			while (currTime >= gameTime) {
 				gameTime += 1000. / TPS;
