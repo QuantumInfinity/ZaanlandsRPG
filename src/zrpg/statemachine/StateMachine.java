@@ -54,6 +54,14 @@ public class StateMachine {
 		return stack.empty();
 	}
 	
+	// Destoy all states
+	public void destroyAll() {
+		while (!stack.empty()) {
+			destroy();
+			stack.pop();
+		}
+	}
+	
 	// Switch to another state, removing the one thats currently on top.
 	public void switchToState(int state) {
 		actionQueue.offer(new Action(Action.ACTION_SWITCH, state));

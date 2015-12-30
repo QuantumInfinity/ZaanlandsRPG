@@ -2,6 +2,7 @@ package zrpg;
 
 import java.util.logging.Logger;
 
+import zrpg.bootstrap.Bootstrap;
 import zrpg.logging.Log;
 import zrpg.statemachine.StateMachine;
 import zrpg.util.FPSMeter;
@@ -39,8 +40,9 @@ public class ZRPG {
 			throw new RuntimeException("Only once instance of ZRPG can be running.");
 		instance = this;
 		Log.initLogger();
-		
 		logger.info("Initializing...");	
+		Bootstrap.loadNatives();
+		
 		startTime = System.nanoTime();
 		fpsmeter = new FPSMeter();
 		tickmeter = new FPSMeter();

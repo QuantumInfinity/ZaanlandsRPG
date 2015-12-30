@@ -1,32 +1,32 @@
 package zrpg.bootstrap;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import zrpg.States;
-import zrpg.ZRPG;
 import zrpg.bootstrap.OSUtils.OSType;
 import zrpg.bootstrap.OSUtils.UnsupportedArchitectureException;
 import zrpg.bootstrap.OSUtils.UnsupportedOSException;
-import zrpg.statemachine.IState;
 
-public class BootstrapState implements IState {
+public class Bootstrap {
 
-	// State to load the LWJGL natives.
-	private static final Logger logger =  Logger.getLogger(BootstrapState.class.getName());
-
-	@Override
-	public void onInit() {
+	private static final Logger logger =  Logger.getLogger(Bootstrap.class.getName());
+	
+	// Load LWJGL natives
+	public static boolean loadNatives() {
+		logger.info("Loading natives...");
 		try {
 			loadLWJGL();
+			logger.info("Natives succesfully loaded!");
+			return true;
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			logger.log(Level.SEVERE, "Error while loading natives!", e);
+			System.exit(0);
 		}
-
-		ZRPG.gameState().switchToState(States.WINDOW);
+		return false;
 	}
-
-	public static void loadLWJGL() throws IOException {
+	
+	private static void loadLWJGL() throws IOException {
 		String arch = System.getProperty("sun.arch.data.model");
 		if (arch.equals("64"))
 			loadLWJGL64();
@@ -36,7 +36,7 @@ public class BootstrapState implements IState {
 			throw new UnsupportedArchitectureException(arch);
 	}
 
-	public static void loadLWJGL64() throws IOException {
+	private static void loadLWJGL64() throws IOException {
 		OSType os = OSUtils.getOperatingSystemType();
 
 		switch (os) {
@@ -63,7 +63,7 @@ public class BootstrapState implements IState {
 		}
 	}
 
-	public static void loadLWJGL86() throws IOException {
+	private static void loadLWJGL86() throws IOException {
 		OSType os = OSUtils.getOperatingSystemType();
 		switch (os) {
 		case Linux:
@@ -83,19 +83,7 @@ public class BootstrapState implements IState {
 		}
 	}
 
-	public static void logNativeInfo(String platform) {
-		logger.info("Loading natives for " + platform);
-	}
-	
-	@Override
-	public void onUpdate() {
-	}
-
-	@Override
-	public void onRender() {
-	}
-
-	@Override
-	public void onDestroy() {
+	private static void logNativeInfo(String platform) {
+		logger.info("Platform: " + platform);
 	}
 }
