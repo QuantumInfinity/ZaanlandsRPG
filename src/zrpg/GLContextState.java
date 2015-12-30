@@ -6,7 +6,7 @@ public class GLContextState implements IState {
 
 	// State to setup the gl context & manage the window.
 	
-	// TODO params & error handling & logging
+	// TODO params & error handling
 	@Override
 	public void onInit() {
 		ZRPG.gameState().popState();

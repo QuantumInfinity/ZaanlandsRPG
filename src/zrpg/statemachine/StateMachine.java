@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Logger;
 
 public class StateMachine {
 
+	private static final Logger logger =  Logger.getLogger(StateMachine.class.getName());
 	// Arraylist of states in this statemachine.
 	ArrayList<IState> states;
 	// The current state.
 	Stack<Integer> stack;
 	// Actions to update the state with.
 	Queue<Action> actionQueue;
-
+	
 	public StateMachine() {
 		states = new ArrayList<IState>();
 		stack = new Stack<Integer>();
@@ -34,13 +36,16 @@ public class StateMachine {
 			//System.err.println(actionQueue.size() + " " + a.action + " " + stack.size() + " ");
 			switch(a.action) {
 			case Action.ACTION_SWITCH:
+				logger.info("State switch");
 				destroy();
 				stack.pop(); // No break.
 			case Action.ACTION_PUSH:
+				logger.info("State push");
 				stack.push(a.state);
 				init();
 				break;
 			case Action.ACTION_POP:
+				logger.info("State pop");
 				destroy();
 				stack.pop();
 				break;

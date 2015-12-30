@@ -1,10 +1,15 @@
 package zrpg;
 
+import java.util.logging.Logger;
+
+import zrpg.logging.Log;
 import zrpg.statemachine.StateMachine;
 import zrpg.util.FPSMeter;
 
 public class ZRPG {
 
+	private static final Logger logger =  Logger.getLogger(ZRPG.class.getName());
+	
 	// The current game instance.
 	public static ZRPG instance = null;
 
@@ -23,7 +28,7 @@ public class ZRPG {
 	// When the game started.
 	private long startTime;
 	
-	// meters to calculate the actual fps and actual tps.
+	// Meters to calculate the actual fps and actual tps.
 	private FPSMeter fpsmeter, tickmeter;
 	
 	// The statemachine for this game.
@@ -32,8 +37,10 @@ public class ZRPG {
 	private ZRPG() {
 		if (instance != null)
 			throw new RuntimeException("Only once instance of ZRPG can be running.");
-		
 		instance = this;
+		Log.initLogger();
+		
+		logger.info("Initializing...");	
 		startTime = System.nanoTime();
 		fpsmeter = new FPSMeter();
 		tickmeter = new FPSMeter();
@@ -44,6 +51,7 @@ public class ZRPG {
 	
 	// Run the main loop.
 	private void run() {
+		logger.info("Running game loop...");
 		double gameTime = getMillis(), renderTime = gameTime;
 
 		while (!gameState.updateMachine()) {
@@ -78,6 +86,7 @@ public class ZRPG {
 			else
 				render();
 		}
+		logger.info("Stopped.");
 	}
 
 	// Render the game.
